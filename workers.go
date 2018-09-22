@@ -9,8 +9,9 @@ import (
 	"sync"
 )
 
+var	RETRY_KEY          = "goretry"
+
 const (
-	RETRY_KEY          = "goretry"
 	SCHEDULED_JOBS_KEY = "schedule"
 )
 
