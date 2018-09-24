@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"math/rand"
+	"strings"
 	"time"
 )
 
@@ -26,7 +27,11 @@ func (r *MiddlewareRetry) Call(queue string, message *Msg, next func() bool) (ac
 				try = r.Retriable
 			}
 			if try(message) {
-				message.Set("queue", queue)
+				if strings.HasPrefix(queue, Config.Namespace + ":") {
+					message.Set("queue", queue[len(Config.Namespace)+1:])
+				} else {
+					message.Set("queue", queue)
+				}
 				message.Set("error_message", fmt.Sprintf("%v", e))
 				retryCount := incrementRetry(message)
 
