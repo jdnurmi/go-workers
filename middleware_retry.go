@@ -27,8 +27,8 @@ func (r *MiddlewareRetry) Call(queue string, message *Msg, next func() bool) (ac
 				try = r.Retriable
 			}
 			if try(message) {
-				if strings.HasPrefix(queue, Config.Namespace + ":") {
-					message.Set("queue", queue[len(Config.Namespace)+1:])
+				if strings.HasPrefix(queue, Config.Namespace) {
+					message.Set("queue", queue[len(Config.Namespace):])
 				} else {
 					message.Set("queue", queue)
 				}
